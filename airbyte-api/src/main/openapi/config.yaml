@@ -3258,7 +3258,7 @@ components:
           description: The url to redirect to after getting the user consent
           type: string
         connectionConfiguration:
-          $ref: "#/components/schemas/SourceConfiguration"
+          $ref: "#/components/schemas/DestinationConfiguration"
     OAuthConsentRead:
       type: object
       required:
@@ -3303,7 +3303,7 @@ components:
           type: object
           additionalProperties: true # Oauth parameters like code, state, etc.. will be different per API so we don't specify them in advance
         connectionConfiguration:
-          $ref: "#/components/schemas/SourceConfiguration"
+          $ref: "#/components/schemas/DestinationConfiguration"
     CompleteSourceOauthResponse:
       type: object
       properties:
