@@ -7,7 +7,9 @@ package io.airbyte.server.handlers;
 import com.google.common.collect.ImmutableMap;
 import io.airbyte.analytics.TrackingClient;
 import io.airbyte.api.model.CompleteDestinationOAuthRequest;
+import io.airbyte.api.model.CompleteDestinationOauthResponse;
 import io.airbyte.api.model.CompleteSourceOauthRequest;
+import io.airbyte.api.model.CompleteSourceOauthResponse;
 import io.airbyte.api.model.DestinationOauthConsentRequest;
 import io.airbyte.api.model.OAuthConsentRead;
 import io.airbyte.api.model.SetInstancewideDestinationOauthParamsRequestBody;
@@ -79,7 +81,7 @@ public class OAuthHandler {
     return result;
   }
 
-  public Map<String, Object> completeSourceOAuth(final CompleteSourceOauthRequest oauthSourceRequestBody)
+  public CompleteSourceOauthResponse completeSourceOAuth(final CompleteSourceOauthRequest oauthSourceRequestBody)
       throws JsonValidationException, ConfigNotFoundException, IOException {
     final OAuthFlowImplementation oAuthFlowImplementation = getSourceOAuthFlowImplementation(oauthSourceRequestBody.getSourceDefinitionId(),
         oauthSourceRequestBody.getWorkspaceId());
@@ -94,10 +96,10 @@ public class OAuthHandler {
     } catch (final Exception e) {
       LOGGER.error("failed while reporting usage.", e);
     }
-    return result;
+    return new CompleteSourceOauthResponse().oauthOutput(result);
   }
 
-  public Map<String, Object> completeDestinationOAuth(final CompleteDestinationOAuthRequest oauthDestinationRequestBody)
+  public CompleteDestinationOauthResponse completeDestinationOAuth(final CompleteDestinationOAuthRequest oauthDestinationRequestBody)
       throws JsonValidationException, ConfigNotFoundException, IOException {
     final OAuthFlowImplementation oAuthFlowImplementation =
         getDestinationOAuthFlowImplementation(oauthDestinationRequestBody.getDestinationDefinitionId(), oauthDestinationRequestBody.getWorkspaceId());
@@ -112,7 +114,7 @@ public class OAuthHandler {
     } catch (final Exception e) {
       LOGGER.error("failed while reporting usage.", e);
     }
-    return result;
+    return new CompleteDestinationOauthResponse().oauthOutput(result);
   }
 
   public void setSourceInstancewideOauthParams(final SetInstancewideSourceOauthParamsRequestBody requestBody)
